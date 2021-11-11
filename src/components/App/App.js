@@ -1,5 +1,6 @@
 import React from 'react';
 import s from '../PhoneBook/PhoneBook.module.css';
+import shortid from 'shortid'
 
 import Form from '../ContactForm/Form';
 import ContactList from '../ContactList/ContactList';
@@ -16,13 +17,22 @@ export default class Mobile extends React.Component {
     filter: '',
   };
 
-  addContact = contact => {
-    this.setState({
-      contacts: [contact, ...this.state.contacts],
-    });
-  };
+addContact = ({ name, number }) => {
+    const { contacts } = this.state;
+    const contact = {
+      id: shortid.generate(),
+      name,
+      number,
+    };
 
-  veluesFilter = e => {
+    contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())
+      ? alert('This name is already in contacts.')
+      : this.setState(prevState => ({
+          contacts: [contact, ...prevState.contacts],
+          }));
+  };
+  
+  valuesFilter = e => {
     const { name, value } = e.currentTarget;
     this.setState({ [name]: value });
   };
@@ -34,12 +44,12 @@ export default class Mobile extends React.Component {
     );
   };
 
-  checkName = (newName, numbers) => {
+  checkName = (newName) => {
     return this.state.contacts.some(
       ({ name }) => name === Object.values(newName).join(''),
     );
   };
-
+    
   deletedContact = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
@@ -54,8 +64,8 @@ export default class Mobile extends React.Component {
         <Form onSubmit={this.addContact} contactList={this.checkName} />
         <h2 className={s.contactList}>Contacts</h2>
         <SearchContact
-          velue={this.state.filter}
-          SearchContact={this.veluesFilter}
+          value={this.state.filter}
+          SearchContact={this.valuesFilter}
         />
         <ContactList
           contactList={filterContact}

@@ -34,7 +34,7 @@ export default class Form extends Component {
     };
 
     render() {
-const idName = shortid.generate();
+    const idName = shortid.generate();
     const idNumber = shortid.generate();
     
     return (
@@ -46,6 +46,7 @@ const idName = shortid.generate();
           id={idName}
           type="text"
           name="name"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           value={this.state.name}
           onChange={this.InputValues}
           autoComplete="off"
